@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>📍 My Location - Mapbox</title>
+  <title>📍 My Current Location - Mapbox</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Mapbox CSS -->
@@ -15,22 +15,24 @@
       padding: 0;
       text-align: center;
     }
+
+    #coordinates {
+      padding: 12px;
+      font-size: 18px;
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
     #map {
       width: 100%;
-      height: 90vh;
-    }
-    #coordinates {
-      padding: 10px;
-      background-color: #f8f8f8;
-      font-size: 18px;
-      color: #333;
+      height: 85vh; /* Ensure map takes visible space */
     }
   </style>
 </head>
 <body>
 
-  <h2>📍 Your Current Location</h2>
-  <div id="coordinates">Getting location...</div>
+  <h2>📍 My Current Location</h2>
+  <div id="coordinates">Finding your location...</div>
   <div id="map"></div>
 
   <!-- Mapbox JS -->
@@ -42,7 +44,8 @@
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
 
-      document.getElementById('coordinates').innerText = `Latitude: ${lat.toFixed(6)}, Longitude: ${lng.toFixed(6)}`;
+      document.getElementById('coordinates').innerHTML =
+        `✅ Location found!<br><br><strong>Latitude:</strong> ${lat.toFixed(6)}<br><strong>Longitude:</strong> ${lng.toFixed(6)}`;
 
       const map = new mapboxgl.Map({
         container: 'map',
@@ -55,10 +58,12 @@
         .setLngLat([lng, lat])
         .setPopup(new mapboxgl.Popup().setText('You are here!'))
         .addTo(map);
+
     }, error => {
-      document.getElementById('coordinates').innerText = "Failed to get location.";
+      document.getElementById('coordinates').innerText = "❌ Failed to get location.";
       console.error("Geolocation error:", error);
     });
   </script>
+
 </body>
 </html>
